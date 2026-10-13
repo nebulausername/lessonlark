@@ -1,0 +1,8 @@
+node_modules/
+.next*/
+out/
+pruef-ausgabe/
+pruef-wurzel/
+*.tsbuildinfo
+next-env.d.ts
+bilder-roh/

@@ -1,0 +1,509 @@
+@import 'tailwindcss';
+
+/*
+ * Lessonlark, Designsystem „Warm & klar“.
+ *
+ * Farben sind Tokens, die SELBST den Wert wechseln (hell/dunkel, Zielgruppe).
+ * Darum gibt es keine `dark:`-Varianten im Markup, also auch keine zweite
+ * Hälfte, die vom Rest wegdriften kann.
+ *
+ * Zielgruppe: das Inline-Skript im <head> setzt `data-audience` auf <html>,
+ * sobald der Pfad sie nennt. Der Rahmen der Zielgruppe trägt dasselbe Attribut
+ * als Rückfall (ohne JavaScript). Die Akzentfarben sind per @property
+ * registriert, damit ein Wechsel weich überblendet statt zu springen.
+ */
+
+@property --accent {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #ff6b4a;
+}
+@property --accent-ink {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #b83a1e;
+}
+@property --accent-soft {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #ffe3da;
+}
+
+:root {
+  --bg: #fff8ee;
+  --bg-2: #fbf0df;
+  --surface: #ffffff;
+  --ink: #1b2a4a;
+  --ink-2: #4a5878;
+  --line: #eadfcb;
+  --line-strong: #d9c9ad;
+  --primary: #1b2a4a;
+  --on-primary: #fff8ee;
+  --success: #17795e;
+  --danger: #b4231b;
+  --shadow: 0 1px 2px rgb(27 42 74 / 0.06), 0 12px 32px -12px rgb(27 42 74 / 0.18);
+  --shadow-lg: 0 2px 4px rgb(27 42 74 / 0.06), 0 28px 60px -24px rgb(27 42 74 / 0.28);
+  color-scheme: light;
+}
+
+/* Akzente je Zielgruppe. Das <html>-Attribut gewinnt; der Rahmen gilt nur, solange <html> keins trägt. */
+:root[data-audience='students'],
+:root:not([data-audience]) [data-audience='students'] {
+  --accent: #ffc53d;
+  --accent-ink: #8a5a00;
+  --accent-soft: #fff0c4;
+  --accent-ink-dark: #ffc53d;
+}
+:root[data-audience='professionals'],
+:root:not([data-audience]) [data-audience='professionals'] {
+  --accent: #ff6b4a;
+  --accent-ink: #b83a1e;
+  --accent-soft: #ffe3da;
+  --accent-ink-dark: #ff9f87;
+}
+:root[data-audience='schools'],
+:root:not([data-audience]) [data-audience='schools'] {
+  --accent: #2bb59a;
+  --accent-ink: #0f6e5b;
+  --accent-soft: #d3f2ea;
+  --accent-ink-dark: #5ad6bc;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --bg: #0f1626;
+    --bg-2: #141d31;
+    --surface: #17213a;
+    --ink: #f5efe4;
+    --ink-2: #b9c1d3;
+    --line: #26324e;
+    --line-strong: #34426a;
+    --primary: var(--accent);
+    --on-primary: #10182a;
+    --success: #4fd1a5;
+    --danger: #ff8a7a;
+    --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 12px 32px -12px rgb(0 0 0 / 0.6);
+    --shadow-lg: 0 2px 4px rgb(0 0 0 / 0.3), 0 28px 60px -24px rgb(0 0 0 / 0.7);
+    color-scheme: dark;
+  }
+  :root:not([data-theme='light'])[data-audience],
+  :root:not([data-theme='light']):not([data-audience]) [data-audience] {
+    --accent-ink: var(--accent-ink-dark);
+    --accent-soft: color-mix(in oklab, var(--accent) 18%, #17213a);
+  }
+}
+:root[data-theme='dark'] {
+  --bg: #0f1626;
+  --bg-2: #141d31;
+  --surface: #17213a;
+  --ink: #f5efe4;
+  --ink-2: #b9c1d3;
+  --line: #26324e;
+  --line-strong: #34426a;
+  --primary: var(--accent);
+  --on-primary: #10182a;
+  --success: #4fd1a5;
+  --danger: #ff8a7a;
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 12px 32px -12px rgb(0 0 0 / 0.6);
+  --shadow-lg: 0 2px 4px rgb(0 0 0 / 0.3), 0 28px 60px -24px rgb(0 0 0 / 0.7);
+  color-scheme: dark;
+}
+:root[data-theme='dark'][data-audience],
+:root[data-theme='dark']:not([data-audience]) [data-audience] {
+  --accent-ink: var(--accent-ink-dark);
+  --accent-soft: color-mix(in oklab, var(--accent) 18%, #17213a);
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-2: var(--bg-2);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
+  --color-primary: var(--primary);
+  --color-on-primary: var(--on-primary);
+  --color-success: var(--success);
+  --color-danger: var(--danger);
+  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
+  --font-hand: var(--font-caveat), cursive;
+  --radius-card: 1.5rem;
+  --shadow-soft: var(--shadow);
+  --shadow-lift: var(--shadow-lg);
+}
+
+html {
+  background: var(--bg);
+  color: var(--ink);
+  transition:
+    --accent 600ms ease,
+    --accent-ink 600ms ease,
+    --accent-soft 600ms ease;
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: 5rem;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 1.0625rem; /* 17 px */
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+@media (min-width: 1024px) {
+  body {
+    font-size: 1.125rem; /* 18 px */
+  }
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  text-wrap: balance;
+}
+p {
+  text-wrap: pretty;
+}
+
+:focus-visible {
+  outline: 3px solid var(--accent-ink);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+::selection {
+  background: var(--accent-soft);
+  color: var(--ink);
+}
+
+/* Preflight setzt margin:0 auf alles und nimmt <dialog> damit die Mitte. */
+dialog {
+  margin: auto;
+  color: var(--ink);
+}
+dialog::backdrop {
+  background: rgb(15 22 38 / 0.55);
+  backdrop-filter: blur(4px);
+}
+
+/* Fingergroße Trefferflächen nur dort, wo ein Finger tippt. */
+@media (pointer: coarse) {
+  .tap {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+@layer components {
+  .wrap {
+    width: 100%;
+    max-width: 76rem;
+    margin-inline: auto;
+    padding-inline: 1rem;
+  }
+  @media (min-width: 640px) {
+    .wrap {
+      padding-inline: 1.5rem;
+    }
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 2.75rem;
+    padding: 0.625rem 1.25rem;
+    border-radius: 999px;
+    font-weight: 650;
+    font-size: 1rem;
+    line-height: 1.2;
+    text-decoration: none;
+    transition:
+      transform 160ms ease,
+      background-color 160ms ease,
+      box-shadow 160ms ease,
+      color 160ms ease;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .btn-primary {
+    background: var(--primary);
+    color: var(--on-primary);
+    box-shadow: 0 6px 18px -8px rgb(27 42 74 / 0.6);
+  }
+  .btn-accent {
+    background: var(--accent);
+    color: #1b2a4a;
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--ink);
+    border: 1.5px solid var(--line-strong);
+  }
+  .btn-sm {
+    min-height: 2.25rem;
+    padding: 0.4rem 0.9rem;
+    font-size: 0.9375rem;
+  }
+  @media (hover: hover) {
+    .btn-primary:hover,
+    .btn-accent:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px -10px rgb(27 42 74 / 0.6);
+    }
+    .btn-ghost:hover {
+      background: var(--surface);
+      border-color: var(--ink-2);
+    }
+  }
+  .btn:active {
+    transform: translateY(0) scale(0.98);
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent-ink);
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.2rem 0.65rem;
+    border-radius: 999px;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    background: var(--bg-2);
+    color: var(--ink-2);
+    border: 1px solid var(--line);
+  }
+
+  /* Das Etikett für erfundene Beispielinhalte. Steht IMMER neben dem Inhalt. */
+  .sample-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.05rem 0.5rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+    border: 1px dashed var(--line-strong);
+    background: var(--bg);
+  }
+
+  .field {
+    width: 100%;
+    min-height: 3rem;
+    padding: 0.7rem 1rem;
+    border-radius: 0.875rem;
+    border: 1.5px solid var(--line-strong);
+    background: var(--surface);
+    color: var(--ink);
+    font: inherit;
+    transition:
+      border-color 160ms ease,
+      box-shadow 160ms ease;
+  }
+  .field:focus {
+    outline: none;
+    border-color: var(--accent-ink);
+    box-shadow: 0 0 0 4px var(--accent-soft);
+  }
+  .field[aria-invalid='true'] {
+    border-color: var(--danger);
+  }
+
+  /* Wahlkarten (Quiz, Onboarding): das Radio bleibt echt und bedienbar. */
+  .choice {
+    position: relative;
+    display: flex;
+    gap: 0.875rem;
+    align-items: flex-start;
+    padding: 1rem 1.125rem;
+    border-radius: 1.125rem;
+    border: 1.5px solid var(--line);
+    background: var(--surface);
+    cursor: pointer;
+    transition:
+      border-color 160ms ease,
+      background-color 160ms ease,
+      transform 160ms ease;
+  }
+  .choice:has(input:checked) {
+    border-color: var(--accent-ink);
+    background: var(--accent-soft);
+  }
+  .choice:has(input:focus-visible) {
+    outline: 3px solid var(--accent-ink);
+    outline-offset: 2px;
+  }
+  @media (hover: hover) {
+    .choice:hover {
+      border-color: var(--line-strong);
+      transform: translateY(-1px);
+    }
+  }
+  .choice input {
+    accent-color: var(--accent-ink);
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-top: 0.15rem;
+    flex: none;
+  }
+}
+
+/* ---------- Bewegung: fünf Momente, alles andere ruhig ---------- */
+
+/* Moment 1: Unterstrich zeichnet sich */
+.underline-draw path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: draw 900ms 350ms cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Moment 1b: Fortschrittsbalken füllt sich */
+.fill-bar {
+  transform-origin: left center;
+  animation: fill 1200ms 500ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes fill {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+/* Moment 2: Überschrift erscheint neu, wenn die Zielgruppe wechselt */
+.rise {
+  animation: rise 600ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.rise-2 {
+  animation: rise 600ms 90ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.rise-3 {
+  animation: rise 600ms 180ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+/* Moment 3: Quiz-Ergebnis ordnet sich */
+.deal {
+  animation: deal 650ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes deal {
+  from {
+    opacity: 0;
+    transform: translateY(24px) rotate(-3deg) scale(0.96);
+  }
+}
+
+/* Moment 4: Häkchen und Funken */
+.check-draw path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: draw 450ms cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+.spark {
+  animation: spark 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes spark {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.4);
+  }
+  40% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--dx), var(--dy)) scale(1);
+  }
+}
+
+/* Moment 5: Fortschrittsring und Flamme */
+.ring-fill {
+  animation: ring 1400ms 300ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes ring {
+  from {
+    stroke-dashoffset: var(--ring-full);
+  }
+}
+.flame {
+  transform-origin: 50% 90%;
+  animation: flicker 1600ms ease-in-out 3;
+}
+@keyframes flicker {
+  50% {
+    transform: scale(1.08) rotate(-3deg);
+  }
+}
+
+/* Auftritt beim Scrollen. Versteckt wird NUR, was beim Laden unter dem Falz
+   liegt (Klasse `pre`, gesetzt von <Reveal/>). Ohne JavaScript oder bei einem
+   Skriptfehler bleibt alles sichtbar. */
+[data-reveal] {
+  transition:
+    opacity 700ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+[data-reveal].pre {
+  opacity: 0;
+  transform: translateY(18px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+  [data-reveal].pre {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Banner geschlossen: vom Kopf-Skript gesetzt, damit nichts aufblitzt */
+:root[data-banner='zu'] .concept-banner {
+  display: none;
+}
